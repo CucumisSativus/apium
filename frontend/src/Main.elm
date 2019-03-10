@@ -12,9 +12,9 @@ main =
     Browser.sandbox { init = initialize, update = update, view = view }
 
 
-type alias Model =
-    { people : List Person
-    }
+type Model =
+    Loading |
+    LoadedPeople { people : List Person }
 
 
 type alias Person =
@@ -23,8 +23,8 @@ type alias Person =
 
 
 initialize : Model
-initialize =
-    { people = [ {name = "no elo"}] }
+initialize = Loading
+    -- LoadedPeople { people = [ {name = "no elo"}] }
 
 
 type Message
@@ -33,21 +33,63 @@ type Message
 
 update : Message -> Model -> Model
 update message model =
-    case message of
-        AddPerson newPerson ->
-            { model | people = model.people ++ [ newPerson ] }
+    case (message, model) of
+        (AddPerson newPerson, LoadedPeople m ) ->
+          LoadedPeople{ m | people = m.people ++ [ newPerson ] }
+        (AddPerson newPerson, _) ->
+          LoadedPeople{ people = [ newPerson ] }
 
 
 view : Model -> Html Message
 view model =
   let
-    groupedPeople = inGropsOf 4 model.people
-    renderedPeople = List.map renderPersonRow groupedPeople
+    content = case model of
+      LoadedPeople{people} -> renderPeople people
+      Loading -> renderLoading
   in
     Grid.container []
         [ CDN.stylesheet -- creates an inline style node with the Bootstrap CSS
-        , div [] renderedPeople
+        , div []
+          [ content ]
         ]
+
+renderLoading : Html Message
+renderLoading =
+    div [ class "row" ]
+      [
+      div [ class "col-md"]
+      [ div [ class "spinner-border text-primary", attribute "role" "status" ]
+          [ span [ class "sr-only" ]
+              [ text "Loading..." ]
+          ]
+      , div [ class "spinner-border text-secondary", attribute "role" "status" ]
+          [ span [ class "sr-only" ]
+              [ text "Loading..." ]
+          ]
+      , div [ class "spinner-border text-success", attribute "role" "status" ]
+          [ span [ class "sr-only" ]
+              [ text "Loading..." ]
+          ]
+      , div [ class "spinner-border text-danger", attribute "role" "status" ]
+          [ span [ class "sr-only" ]
+              [ text "Loading..." ]
+          ]
+      , div [ class "spinner-border text-warning", attribute "role" "status" ]
+          [ span [ class "sr-only" ]
+              [ text "Loading..." ]
+          ]
+      , div [ class "spinner-border text-info", attribute "role" "status" ]
+          [ span [ class "sr-only" ]
+              [ text "Loading..." ]
+          ]
+      ]
+    ]
+renderPeople : List Person -> Html Message
+renderPeople personList =
+    let
+      groupedPeople = inGropsOf 4 personList
+      renderedPeople = List.map renderPersonRow groupedPeople
+    in div [] renderedPeople
 
 renderPersonRow : List Person -> Html Message
 renderPersonRow personList =
