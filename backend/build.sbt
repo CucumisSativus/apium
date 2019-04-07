@@ -1,7 +1,7 @@
-val Http4sVersion = "0.18.22"
-val Specs2Version = "4.1.0"
+val Http4sVersion  = "0.20.0-RC1"
+val Specs2Version  = "4.1.0"
 val LogbackVersion = "1.2.3"
-val circeVersion = "0.10.0"
+val circeVersion   = "0.10.0"
 lazy val root = (project in file("."))
   .settings(
     organization := "net.cucumbersome",
@@ -9,23 +9,26 @@ lazy val root = (project in file("."))
     version := "0.0.1-SNAPSHOT",
     scalaVersion := "2.12.8",
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
-      "org.http4s" %% "http4s-circe" % Http4sVersion,
-      "org.http4s" %% "http4s-dsl" % Http4sVersion,
-      "org.specs2" %% "specs2-core" % Specs2Version % "test",
-      "ch.qos.logback" % "logback-classic" % LogbackVersion,
-      "com.chuusai" %% "shapeless" % "2.3.3",
-      "com.github.pureconfig" %% "pureconfig" % "0.10.2",
-      "io.circe" %% "circe-core" % circeVersion,
-      "io.circe" %% "circe-generic" % circeVersion,
-      "io.circe" %% "circe-parser" % circeVersion,
-      "io.circe" %% "circe-refined" % circeVersion,
+      "org.http4s"            %% "http4s-blaze-server" % Http4sVersion,
+      "org.http4s"            %% "http4s-circe"        % Http4sVersion,
+      "org.http4s"            %% "http4s-dsl"          % Http4sVersion,
+      "org.specs2"            %% "specs2-core"         % Specs2Version % "test",
+      "ch.qos.logback"        % "logback-classic"      % LogbackVersion,
+      "com.chuusai"           %% "shapeless"           % "2.3.3",
+      "com.github.pureconfig" %% "pureconfig"          % "0.10.2",
+      "io.circe"              %% "circe-core"          % circeVersion,
+      "io.circe"              %% "circe-generic"       % circeVersion,
+      "io.circe"              %% "circe-parser"        % circeVersion,
+      "io.circe"              %% "circe-refined"       % circeVersion,
+      "org.scalaz"            %% "scalaz-zio"          % "1.0-RC3",
+      "org.scalaz"            %% "scalaz-zio-interop-cats" % "1.0-RC3",
     ),
-    addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6"),
-    addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.4"),
+    addCompilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.6"),
+    addCompilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.2.4"),
     scalacOptions ++= Seq(
       "-deprecation", // Emit warning and location for usages of deprecated APIs.
-      "-encoding", "utf-8", // Specify character encoding used by source files.
+      "-encoding",
+      "utf-8", // Specify character encoding used by source files.
       "-explaintypes", // Explain type errors in more detail.
       "-feature", // Emit warning and location for usages of features that should be imported explicitly.
       "-language:existentials", // Existential types (besides wildcard types) can be written and inferred
