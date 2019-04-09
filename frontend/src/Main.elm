@@ -8,13 +8,17 @@ import Browser exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing(..)
 import ListUtils exposing(inGropsOf)
+import Json.Decode exposing (Decoder, map2, field, string)
+import Http
+
 main =
-    Browser.sandbox { init = initialize, update = update, view = view }
+    Browser.element { init = initialize, update = update, view = view, subscriptions = subscriptions }
 
 
 type Model =
     Loading |
-    LoadedPeople { people : List Person }
+    LoadedPeople { people : List Person } |
+    ErrorLoading String
 
 
 type alias Person =
@@ -22,23 +26,38 @@ type alias Person =
     }
 
 
-initialize : Model
-initialize = Loading
+initialize : () -> (Model, Cmd Message)
+initialize _ = (Loading, getPeople)
     -- LoadedPeople { people = [ {name = "no elo"}] }
 
 
+subscriptions : Model -> Sub Message
+subscriptions model =
+  Sub.none
+
 type Message
-    = AddPerson Person
+    = PeopleLoaded (Result Http.Error (List Person))
 
 
-update : Message -> Model -> Model
+
+update : Message -> Model -> (Model, Cmd Message)
 update message model =
-    case (message, model) of
-        (AddPerson newPerson, LoadedPeople m ) ->
-          LoadedPeople{ m | people = m.people ++ [ newPerson ] }
-        (AddPerson newPerson, _) ->
-          LoadedPeople{ people = [ newPerson ] }
+    case message of
+        PeopleLoaded result ->
+          case result of
+            Ok people ->
+              (appendPeople model people, Cmd.none)
+            Err err ->
+              Debug.log (Debug.toString err)
+              (ErrorLoading (Debug.toString err), Cmd.none)
 
+appendPeople: Model -> List Person -> Model
+appendPeople model newPeople =
+  case model of
+    LoadedPeople m ->
+      LoadedPeople{ m | people = m.people ++ newPeople }
+    _ ->
+        LoadedPeople{ people = newPeople }
 
 view : Model -> Html Message
 view model =
@@ -46,12 +65,25 @@ view model =
     content = case model of
       LoadedPeople{people} -> renderPeople people
       Loading -> renderLoading
+      ErrorLoading err -> renderLoadingError err
   in
     Grid.container []
         [ CDN.stylesheet -- creates an inline style node with the Bootstrap CSS
         , div []
           [ content ]
         ]
+
+renderLoadingError: String -> Html Message
+renderLoadingError error =
+    div [ class "row" ]
+      [
+      div [ class "col-md"]
+      [ div [ class "text-primary", attribute "role" "status" ]
+          [ p [  ]
+              [ text ("Error while loading "  ++ error) ]
+          ]
+      ]
+    ]
 
 renderLoading : Html Message
 renderLoading =
@@ -98,3 +130,13 @@ renderPerson person =
               [ text "Go somewhere" ]
           ]
       ]
+
+personDecoder: Decoder (List Person)
+personDecoder = Json.Decode.list (Json.Decode.map Person (field "name" string))
+
+getPeople: Cmd Message
+getPeople =
+  Http.get
+      { url = "http://localhost:8080/people"
+      , expect = Http.expectJson PeopleLoaded personDecoder
+      }
