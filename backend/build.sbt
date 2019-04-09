@@ -16,6 +16,7 @@ lazy val root = (project in file("."))
       "ch.qos.logback"        % "logback-classic"      % LogbackVersion,
       "com.chuusai"           %% "shapeless"           % "2.3.3",
       "com.github.pureconfig" %% "pureconfig"          % "0.10.2",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
       "io.circe"              %% "circe-core"          % circeVersion,
       "io.circe"              %% "circe-generic"       % circeVersion,
       "io.circe"              %% "circe-parser"        % circeVersion,
@@ -59,7 +60,7 @@ lazy val root = (project in file("."))
       "-Xmacro-settings:materialize-derivations",
       "-Yno-adapted-args", // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
       "-Ypartial-unification", // Enable partial unification in type constructor inference
-      "-Ywarn-dead-code", // Warn when dead code is identified.
+//      "-Ywarn-dead-code", // Warn when dead code is identified.
       "-Ywarn-extra-implicit", // Warn when more than one implicit parameter section is defined.
       "-Ywarn-inaccessible", // Warn about inaccessible types in method signatures.
       "-Ywarn-infer-any", // Warn when a type argument is inferred to be `Any`.
