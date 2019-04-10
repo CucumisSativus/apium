@@ -3,7 +3,7 @@ import io.circe.Encoder
 import io.circe.generic.auto._
 import io.circe.refined.refinedEncoder
 import io.circe.syntax._
-import net.cucumbersome.apium.backend.people.PeopleRepository
+import net.cucumbersome.apium.backend.people.PeopleRepositoryRead
 import net.cucumbersome.apium.backend.people.Person._NameTag
 import org.http4s.HttpRoutes
 import org.http4s.circe._
@@ -12,7 +12,7 @@ import scalaz.zio.Task
 import shapeless.tag.@@
 import scalaz.zio.interop.catz._
 
-class PeopleHttpService(repo: PeopleRepository)
+class PeopleHttpService(repo: PeopleRepositoryRead)
     extends Http4sDsl[Task] {
   import PeopleHttpService._
   val service: HttpRoutes[Task] = {

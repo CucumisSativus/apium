@@ -1,8 +1,8 @@
 package net.cucumbersome.apium.backend
 
-import net.cucumbersome.apium.backend.people.PeopleRepository
+import net.cucumbersome.apium.backend.people.PeopleRepositoryRead
 
 case class ApplicationConfig(
-  peopleRepository: PeopleRepository.Configuration
+  peopleRepository: PeopleRepositoryRead.Configuration
 )
 

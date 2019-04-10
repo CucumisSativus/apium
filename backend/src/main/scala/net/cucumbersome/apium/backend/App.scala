@@ -3,7 +3,7 @@ package net.cucumbersome.apium.backend
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.StrictLogging
 import net.cucumbersome.apium.backend
-import net.cucumbersome.apium.backend.people.PeopleRepository
+import net.cucumbersome.apium.backend.people.PeopleRepositoryRead
 import net.cucumbersome.apium.backend.people.http.PeopleHttpService
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -18,7 +18,7 @@ object App extends CatsApp with StrictLogging{
   override def run(args: List[String]): ZIO[backend.App.Environment, Nothing, Int] = {
     val run = for{
       config <- Task(pureconfig.loadConfigOrThrow[ApplicationConfig](ConfigFactory.load()))
-      repo =  PeopleRepository.apply(config.peopleRepository)
+      repo =  PeopleRepositoryRead.apply(config.peopleRepository)
       _ <- startServer(repo)
     } yield ()
 
@@ -28,13 +28,12 @@ object App extends CatsApp with StrictLogging{
         case Left(ex) =>
           logger.error("Startup failed", ex)
           1
-        case Right(_) =>
-          0
+        case Right(_) => 0
       }
 
   }
 
-  private def startServer(repo: PeopleRepository) = {
+  private def startServer(repo: PeopleRepositoryRead) = {
     val peopleService =  new PeopleHttpService(repo)
     val router = Router("/" -> CORS(peopleService.service)).orNotFound
     BlazeServerBuilder[Task]
