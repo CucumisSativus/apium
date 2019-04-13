@@ -4,7 +4,7 @@ import io.circe.generic.auto._
 import io.circe.refined.refinedEncoder
 import io.circe.syntax._
 import net.cucumbersome.apium.backend.people.PeopleRepositoryRead
-import net.cucumbersome.apium.backend.people.Person._NameTag
+import net.cucumbersome.apium.backend.people.Person.{_IdTag, _NameTag}
 import org.http4s.HttpRoutes
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
@@ -25,4 +25,5 @@ class PeopleHttpService(repo: PeopleRepositoryRead)
 
 object PeopleHttpService{
   implicit val nameEncoder : Encoder[String @@ _NameTag] = refinedEncoder
+  implicit val idEncoder : Encoder[String @@ _IdTag] = refinedEncoder
 }

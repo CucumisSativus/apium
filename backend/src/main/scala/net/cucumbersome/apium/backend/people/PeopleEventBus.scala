@@ -1,16 +1,19 @@
 package net.cucumbersome.apium.backend.people
-import net.cucumbersome.apium.backend.infrastructure.EventBus
+import net.cucumbersome.apium.backend.people.PeopleEventBus.PeopleEventBusService
 import scalaz.zio._
 
-class PeopleEventBus(repository: PeopleRepositoryWrite) extends EventBus[Event]{
-//  import PeopleEventBus._
-//  val bus = Ref[Queue[Event]](Queue.bounded(queueSize))
-
-  override def publishEvent(event: Event): Task[Unit] = event match {
-    case PersonCreated(person) => repository.addPerson(person)
-  }
+trait PeopleEventBus{
+  def service: PeopleEventBusService
 }
-
 object PeopleEventBus{
+  trait PeopleEventBusService{
+    def publishEvent(event: Event): UIO[Unit]
+  }
+
   val queueSize: Int = 100
+  class LiveEventBusService(repository: PeopleRepositoryWrite) extends PeopleEventBusService {
+    def publishEvent(event: Event): UIO[Unit] = event match {
+      case PersonCreated(person) => repository.addPerson(person)
+    }
+  }
 }

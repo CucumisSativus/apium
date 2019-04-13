@@ -2,7 +2,7 @@ package net.cucumbersome.apium.backend.people
 import shapeless.tag
 import shapeless.tag.@@
 
-case class Person(name: Person.Name)
+case class Person(id: Person.Id, name: Person.Name)
 
 object Person {
   sealed trait _NameTag

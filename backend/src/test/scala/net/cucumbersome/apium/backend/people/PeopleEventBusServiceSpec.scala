@@ -1,16 +1,17 @@
 package net.cucumbersome.apium.backend.people
+import net.cucumbersome.apium.backend.people.PeopleEventBus.LiveEventBusService
 import org.specs2.matcher.MatchResult
 import scalaz.zio.Task
 import scalaz.zio._
 
-class PeopleEventBusSpec extends org.specs2.mutable.Specification with Person.PersonOps{
+class PeopleEventBusServiceSpec extends org.specs2.mutable.Specification with Person.PersonOps{
   "people event bus" >> {
     "should handle people created event properly" >> {
-      val person = Person("name".toName)
+      val person = Person("id".toId, "name".toName)
       inScope{ testScope =>
         for{
           (peopleRef, repo) <- testScope.peopleAndMock
-          bus = new PeopleEventBus(repo)
+          bus = new LiveEventBusService(repo)
           _ <- bus.publishEvent(PersonCreated(person))
           peopleAfterEvent <- peopleRef.get
         } yield peopleAfterEvent should_=== List(person)
