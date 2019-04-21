@@ -13,7 +13,7 @@ trait PeopleRepositoryWrite{
 }
 object PeopleRepositoryRead extends PersonOps {
   def apply(
-    configuration: Configuration): PeopleRepositoryRead = {
+    configuration: Configuration): PeopleRepositoryRead with PeopleRepositoryWrite = {
     new PeopleRepositoryRead with PeopleRepositoryWrite {
       var people : List[Person] = buildFakePeople(configuration.peopleNumber)
       override def getAll: UIO[List[Person]] =

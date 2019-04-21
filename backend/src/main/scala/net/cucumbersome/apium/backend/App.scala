@@ -3,15 +3,15 @@ package net.cucumbersome.apium.backend
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.StrictLogging
 import net.cucumbersome.apium.backend
-import net.cucumbersome.apium.backend.people.PeopleRepositoryRead
-import net.cucumbersome.apium.backend.people.http.PeopleHttpService
+import net.cucumbersome.apium.backend.people.http.{CommandHandlerAdapter, PeopleHttpService}
+import net.cucumbersome.apium.backend.people.{PeopleCommandHandler, PeopleEventBus, PeopleRepositoryRead}
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.server.middleware._
 import scalaz.zio.interop.catz._
 import scalaz.zio.interop.catz.implicits._
 import scalaz.zio.{Task, ZIO}
-import org.http4s.server.middleware._
 import pureconfig.generic.auto._
 
 object App extends CatsApp with StrictLogging{
@@ -19,7 +19,9 @@ object App extends CatsApp with StrictLogging{
     val run = for{
       config <- Task(pureconfig.loadConfigOrThrow[ApplicationConfig](ConfigFactory.load()))
       repo =  PeopleRepositoryRead.apply(config.peopleRepository)
-      _ <- startServer(repo)
+      commandHandler = PeopleCommandHandler.apply
+      eventBus = PeopleEventBus.apply(repo)
+      _ <- startServer(repo, commandHandler, eventBus)
     } yield ()
 
     run
@@ -33,8 +35,8 @@ object App extends CatsApp with StrictLogging{
 
   }
 
-  private def startServer(repo: PeopleRepositoryRead) = {
-    val peopleService =  new PeopleHttpService(repo)
+  private def startServer(repo: PeopleRepositoryRead, commandHandler: PeopleCommandHandler, eventBus: PeopleEventBus) = {
+    val peopleService =  new PeopleHttpService(repo, CommandHandlerAdapter(commandHandler, eventBus))
     val router = Router("/" -> CORS(peopleService.service)).orNotFound
     BlazeServerBuilder[Task]
       .bindHttp(8080, "0.0.0.0")
