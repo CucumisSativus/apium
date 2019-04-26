@@ -10,7 +10,7 @@ import Html.Attributes exposing(..)
 import ListUtils exposing(inGropsOf)
 import Json.Decode exposing (Decoder, map2, field, string)
 import Http
-
+import Model exposing(Person)
 main =
     Browser.element { init = initialize, update = update, view = view, subscriptions = subscriptions }
 
@@ -21,15 +21,8 @@ type Model =
     ErrorLoading String
 
 
-type alias Person =
-    { name : String
-    }
-
-
 initialize : () -> (Model, Cmd Message)
 initialize _ = (Loading, getPeople)
-    -- LoadedPeople { people = [ {name = "no elo"}] }
-
 
 subscriptions : Model -> Sub Message
 subscriptions model =

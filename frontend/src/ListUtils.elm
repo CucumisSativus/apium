@@ -5,7 +5,7 @@ import MaybeUtils exposing(getOrElse)
 
 inGropsOf : Int -> List a -> List(List a)
 inGropsOf groupSize elements =
-  ingroupsOfIterate groupSize elements 1 []
+  ingroupsOfIterate groupSize elements 0 []
 
 init: List a -> List a
 init la =
@@ -25,8 +25,8 @@ ingroupsOfIterate groupSize notGrouped iterator acc =
   case notGrouped of
     [] -> acc
     h :: t ->
-      if  modBy iterator groupSize == 0 then
-          ingroupsOfIterate groupSize t (iterator+1) acc ++ [[h]]
+      if  modBy groupSize iterator == 0 then
+          ingroupsOfIterate groupSize t (iterator+1) (acc ++ [[h]])
       else
         let
           lastEl = last acc
