@@ -1,31 +1,33 @@
-val Http4sVersion  = "0.20.0-RC1"
-val Specs2Version  = "4.1.0"
+val Http4sVersion  = "0.21.0-M2"
+val Specs2Version  = "4.6.0"
 val LogbackVersion = "1.2.3"
-val circeVersion   = "0.10.0"
+val circeVersion   = "0.12.0-RC3"
+val zioVersion     = "1.0.0-RC11"
 lazy val root = (project in file("."))
   .settings(
     organization := "net.cucumbersome",
     name := "backend",
     version := "0.0.1-SNAPSHOT",
-    scalaVersion := "2.12.8",
+    scalaVersion := "2.12.9",
     libraryDependencies ++= Seq(
-      "org.http4s"            %% "http4s-blaze-server" % Http4sVersion,
-      "org.http4s"            %% "http4s-circe"        % Http4sVersion,
-      "org.http4s"            %% "http4s-dsl"          % Http4sVersion,
-      "org.specs2"            %% "specs2-core"         % Specs2Version % "test",
-      "ch.qos.logback"        % "logback-classic"      % LogbackVersion,
-      "com.chuusai"           %% "shapeless"           % "2.3.3",
-      "com.github.pureconfig" %% "pureconfig"          % "0.10.2",
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
-      "io.circe"              %% "circe-core"          % circeVersion,
-      "io.circe"              %% "circe-generic"       % circeVersion,
-      "io.circe"              %% "circe-parser"        % circeVersion,
-      "io.circe"              %% "circe-refined"       % circeVersion,
-      "org.scalaz"            %% "scalaz-zio"          % "1.0-RC3",
-      "org.scalaz"            %% "scalaz-zio-interop-cats" % "1.0-RC3",
+      "org.http4s"                 %% "http4s-blaze-server" % Http4sVersion,
+      "org.http4s"                 %% "http4s-circe"        % Http4sVersion,
+      "org.http4s"                 %% "http4s-dsl"          % Http4sVersion,
+      "org.specs2"                 %% "specs2-core"         % Specs2Version % "test",
+      "ch.qos.logback"             % "logback-classic"      % LogbackVersion,
+      "com.chuusai"                %% "shapeless"           % "2.3.3",
+      "com.github.pureconfig"      %% "pureconfig"          % "0.11.1",
+      "com.typesafe.scala-logging" %% "scala-logging"       % "3.9.2",
+      "io.circe"                   %% "circe-core"          % circeVersion,
+      "io.circe"                   %% "circe-generic"       % circeVersion,
+      "io.circe"                   %% "circe-parser"        % circeVersion,
+      "io.circe"                   %% "circe-refined"       % circeVersion,
+      "dev.zio"                    %% "zio"                 % zioVersion,
+      "dev.zio"                    %% "zio-interop-cats"    % "2.0.0.0-RC2",
+      "com.softwaremill.tapir"     %% "tapir-core"          % "0.9.3"
     ),
-    addCompilerPlugin("org.spire-math" %% "kind-projector"     % "0.9.6"),
-    addCompilerPlugin("com.olegpy"     %% "better-monadic-for" % "0.2.4"),
+    addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
+    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1"),
     scalacOptions ++= Seq(
       "-deprecation", // Emit warning and location for usages of deprecated APIs.
       "-encoding",
@@ -58,8 +60,7 @@ lazy val root = (project in file("."))
       "-Xlint:type-parameter-shadow", // A local type parameter shadows a type already in scope.
       "-Xlint:unsound-match", // Pattern match may not be typesafe.
       "-Xmacro-settings:materialize-derivations",
-      "-Yno-adapted-args", // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
-      "-Ypartial-unification", // Enable partial unification in type constructor inference
+      "-Yno-adapted-args",     // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
 //      "-Ywarn-dead-code", // Warn when dead code is identified.
       "-Ywarn-extra-implicit", // Warn when more than one implicit parameter section is defined.
       "-Ywarn-inaccessible", // Warn about inaccessible types in method signatures.

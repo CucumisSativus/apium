@@ -9,8 +9,8 @@ import net.cucumbersome.apium.backend.people.Person.{_IdTag, _NameTag}
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.{HttpRoutes, Response}
-import scalaz.zio.Task
-import scalaz.zio.interop.catz._
+import zio.Task
+import zio.interop.catz._
 import shapeless.tag.@@
 
 class PeopleHttpService(repo: PeopleRepositoryRead, commandHandler: CommandHandlerAdapter)

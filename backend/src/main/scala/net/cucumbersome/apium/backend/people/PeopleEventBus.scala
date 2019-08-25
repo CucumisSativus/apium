@@ -1,6 +1,6 @@
 package net.cucumbersome.apium.backend.people
 import net.cucumbersome.apium.backend.people.PeopleEventBus.PeopleEventBusService
-import scalaz.zio._
+import zio._
 
 trait PeopleEventBus{
   def service: PeopleEventBusService

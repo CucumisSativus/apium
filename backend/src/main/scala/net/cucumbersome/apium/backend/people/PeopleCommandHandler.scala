@@ -3,7 +3,7 @@ package net.cucumbersome.apium.backend.people
 import cats.data.NonEmptyList
 import net.cucumbersome.apium.backend.people.PeopleCommandHandler.{CommandError, CreatePerson}
 import net.cucumbersome.apium.backend.people.validators.CreatePersonValidator
-import scalaz.zio.ZIO
+import zio.ZIO
 
 
 trait PeopleCommandHandler{

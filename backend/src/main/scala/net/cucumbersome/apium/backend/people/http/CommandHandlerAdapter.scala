@@ -2,7 +2,7 @@ package net.cucumbersome.apium.backend.people.http
 
 import net.cucumbersome.apium.backend.people.{PeopleCommandHandler, PeopleEventBus}
 import net.cucumbersome.apium.backend.people.PeopleCommandHandler.{CommandError, CreatePerson}
-import scalaz.zio.ZIO
+import zio.ZIO
 
 trait CommandHandlerAdapter{
   def handle(createPerson: CreatePerson): ZIO[Any, CommandError, Unit]

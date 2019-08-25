@@ -9,9 +9,9 @@ import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware._
-import scalaz.zio.interop.catz._
-import scalaz.zio.interop.catz.implicits._
-import scalaz.zio.{Task, ZIO}
+import zio.interop.catz._
+import zio.interop.catz.implicits._
+import zio.{Task, ZIO}
 import pureconfig.generic.auto._
 
 object App extends CatsApp with StrictLogging{

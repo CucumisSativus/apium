@@ -1,6 +1,6 @@
 package net.cucumbersome.apium.backend
 
-import scalaz.zio.ZIO
+import zio.ZIO
 
 package object people {
   def publishEvent(event: Event): ZIO[PeopleEventBus, Nothing, Unit] =

@@ -3,7 +3,7 @@ package net.cucumbersome.apium.backend.people
 import java.util.UUID
 
 import net.cucumbersome.apium.backend.people.Person.PersonOps
-import scalaz.zio.UIO
+import zio.UIO
 trait PeopleRepositoryRead {
   def getAll: UIO[List[Person]]
 }

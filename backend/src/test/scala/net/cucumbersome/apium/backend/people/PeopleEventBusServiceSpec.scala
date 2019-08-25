@@ -1,6 +1,6 @@
 package net.cucumbersome.apium.backend.people
 import org.specs2.matcher.MatchResult
-import scalaz.zio.{Task, _}
+import zio.{Task, _}
 
 class PeopleEventBusServiceSpec extends org.specs2.mutable.Specification with Person.PersonOps{
   "people event bus" >> {

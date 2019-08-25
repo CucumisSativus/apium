@@ -3,7 +3,7 @@ package net.cucumbersome.apium.backend.people
 import cats.data.NonEmptyList
 import net.cucumbersome.apium.backend.people.PeopleCommandHandler.{CreatePerson, ValidationError}
 import org.specs2.matcher.MatchResult
-import scalaz.zio.{DefaultRuntime, Ref, UIO, ZIO}
+import zio.{DefaultRuntime, Ref, UIO, ZIO}
 
 class PeopleCommandHandlerSpec extends org.specs2.mutable.Specification with Person.PersonOps{
   "people command handler" >> {
